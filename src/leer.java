@@ -31,9 +31,12 @@ public class leer extends Thread {
                     "Javi", "javi54321");
             Statement stmt = con.createStatement();
             List<String[]> datos = reader.readAll();
-            for (int i = inicio + 1; i <= 100; i += aumento) {
-                String[] linea = datos.get(i);
-                stmt.executeUpdate("INSERT INTO envios values (" + linea[0] + ")");
+            for (int i = inicio + 1; i <= datos.size(); i += aumento) {
+                if (i == datos.size())
+                    continue;
+                String nuevalinea = String.join(",", datos.get(i));
+                nuevalinea = nuevalinea.replaceAll("([0-9]*\\/[a-z]*\\/[0-9]*)", " '$1' ");
+                stmt.executeUpdate("INSERT INTO envios values (" + nuevalinea + ")");
             }
         } catch (IOException e) {
             e.printStackTrace();
