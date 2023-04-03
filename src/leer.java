@@ -25,16 +25,15 @@ public class leer extends Thread {
     }
 
     public void run() {
-        System.out.println("dasfdasdfsd");
         try (CSVReader reader = new CSVReader(new FileReader(archivoCSV))) {
             Connection con = DriverManager.getConnection(
                     "jdbc:sqlserver://localhost:1433;encrypt=true;databaseName=almacen;TrustServerCertificate=true;",
                     "Javi", "javi54321");
             Statement stmt = con.createStatement();
             List<String[]> datos = reader.readAll();
-            for (int i = inicio; i < datos.size(); i += aumento) {
+            for (int i = inicio + 1; i <= 100; i += aumento) {
                 String[] linea = datos.get(i);
-                stmt.executeQuery("INSERT INTO envios values (" + linea[0] + ")");
+                stmt.executeUpdate("INSERT INTO envios values (" + linea[0] + ")");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -43,8 +42,9 @@ public class leer extends Thread {
         } catch (CsvException e) {
             e.printStackTrace();
         } catch (SQLException e) {
-            System.out.println("no se pudo :P");
+            System.out.println(e);
             e.printStackTrace();
         }
+        System.out.println("se inserto correctamente");
     }
 }
