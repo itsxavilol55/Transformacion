@@ -1,20 +1,8 @@
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvValidationException;
-import java.io.FileReader;
-import java.io.IOException;
-
 public class App {
     public static void main(String[] args) {
-        String archivoCSV = "C:/datos/VentaAutos.csv";
-        try (CSVReader reader = new CSVReader(new FileReader(archivoCSV))) {
-            String[] linea;
-            while ((linea = reader.readNext()) != null) {
-                System.out.println(linea[0]);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (CsvValidationException e) {
-            e.printStackTrace();
-        }
+        leer leer1 = new leer("TicketH.csv", 0, 2);
+        leer leer2 = new leer("TicketH.csv", 1, 2);
+        leer1.start();
+        leer2.start();
     }
 }
