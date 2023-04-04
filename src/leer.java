@@ -17,11 +17,13 @@ public class leer extends Thread {
     private String archivoCSV;
     private int aumento;
     private int inicio;
+    private String tabla;
 
-    public leer(String archivo, int inicio, int aumento) {
+    public leer(String archivo, int inicio, int aumento, String tabla) {
         archivoCSV = "C:/datos/" + archivo;
         this.aumento = aumento;
         this.inicio = inicio;
+        this.tabla = tabla;
     }
 
     public void run() {
@@ -36,7 +38,9 @@ public class leer extends Thread {
                     continue;
                 String nuevalinea = String.join(",", datos.get(i));
                 nuevalinea = nuevalinea.replaceAll("([0-9]*\\/[a-z]*\\/[0-9]*)", " '$1' ");
-                stmt.executeUpdate("INSERT INTO envios values (" + nuevalinea + ")");
+                nuevalinea = nuevalinea.replaceAll(" ", "");
+                System.out.println(nuevalinea);
+                stmt.executeUpdate("INSERT INTO " + tabla + " values (" + nuevalinea + ")");
             }
         } catch (IOException e) {
             e.printStackTrace();
