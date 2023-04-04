@@ -1,5 +1,4 @@
 import java.lang.Thread;
-import java.lang.Runnable;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 import com.opencsv.exceptions.CsvValidationException;
@@ -8,8 +7,6 @@ import java.io.IOException;
 import java.util.List;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -33,9 +30,7 @@ public class leer extends Thread {
                     "Javi", "javi54321");
             Statement stmt = con.createStatement();
             List<String[]> datos = reader.readAll();
-            for (int i = inicio + 1; i <= datos.size(); i += aumento) {
-                if (i == datos.size())
-                    continue;
+            for (int i = inicio + 1; i < datos.size(); i += aumento) {
                 StringBuilder nuevalinea = new StringBuilder(String.join(",", datos.get(i)));
                 nuevalinea.replace(0, nuevalinea.length(),
                         nuevalinea.toString().replaceAll("([0-9]*\\/[a-z]*\\/[0-9]*)", " '$1' "));
@@ -44,13 +39,16 @@ public class leer extends Thread {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            return;
         } catch (CsvValidationException e) {
             e.printStackTrace();
+            return;
         } catch (CsvException e) {
             e.printStackTrace();
+            return;
         } catch (SQLException e) {
-            System.out.println(e);
             e.printStackTrace();
+            return;
         }
         System.out.println("se inserto correctamente en tabla: " + tabla);
     }
