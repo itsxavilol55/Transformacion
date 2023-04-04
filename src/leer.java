@@ -36,11 +36,11 @@ public class leer extends Thread {
             for (int i = inicio + 1; i <= datos.size(); i += aumento) {
                 if (i == datos.size())
                     continue;
-                String nuevalinea = String.join(",", datos.get(i));
-                nuevalinea = nuevalinea.replaceAll("([0-9]*\\/[a-z]*\\/[0-9]*)", " '$1' ");
-                nuevalinea = nuevalinea.replaceAll(" ", "");
-                System.out.println(nuevalinea);
-                stmt.executeUpdate("INSERT INTO " + tabla + " values (" + nuevalinea + ")");
+                StringBuilder nuevalinea = new StringBuilder(String.join(",", datos.get(i)));
+                nuevalinea.replace(0, nuevalinea.length(),
+                        nuevalinea.toString().replaceAll("([0-9]*\\/[a-z]*\\/[0-9]*)", " '$1' "));
+                nuevalinea.replace(0, nuevalinea.length(), nuevalinea.toString().replaceAll(" ", ""));
+                stmt.executeUpdate("INSERT INTO " + tabla + " values (" + nuevalinea.toString() + ")");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -52,6 +52,6 @@ public class leer extends Thread {
             System.out.println(e);
             e.printStackTrace();
         }
-        System.out.println("se inserto correctamente");
+        System.out.println("se inserto correctamente en tabla: " + tabla);
     }
 }
