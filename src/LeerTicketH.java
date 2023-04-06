@@ -6,23 +6,18 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.List;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class leer extends Thread {
-    private String archivoCSV;
-    private int aumento;
-    private int inicio;
-    private String tabla;
+public class LeerTicketH extends Thread {
+    private int aumento, inicio;
     private Hashtable<String, int[]> meses = new Hashtable<>();
+    private Statement stmt;
 
-    public leer(String archivo, int inicio, int aumento, String tabla) {
-        archivoCSV = "C:/datos/" + archivo;
+    public LeerTicketH(Statement stmt, int aumento, int inicio) {
         this.aumento = aumento;
         this.inicio = inicio;
-        this.tabla = tabla;
+        this.stmt = stmt;
         meses.put("ene", new int[] { 1, 31 });
         meses.put("feb", new int[] { 2, 28 });
         meses.put("mar", new int[] { 3, 31 });
@@ -38,17 +33,14 @@ public class leer extends Thread {
     }
 
     public void run() {
-        try (CSVReader reader = new CSVReader(new FileReader(archivoCSV))) {
-            Connection con = DriverManager.getConnection(
-                    "jdbc:sqlserver://localhost:1433;encrypt=true;databaseName=almacen;TrustServerCertificate=true;",
-                    "Javi", "javi54321");
-            Statement stmt = con.createStatement();
+        try (CSVReader reader = new CSVReader(new FileReader("TicketH.csv"))) {
             List<String[]> datos = reader.readAll();
             String mes;
             int dia = 0;
             String letras = "\\/([a-z]*)\\/", numeros = "([0-9]*)";
+            StringBuilder nuevalinea;
             for (int i = inicio + 1; i < datos.size(); i += aumento) {
-                StringBuilder nuevalinea = new StringBuilder(String.join(",", datos.get(i)));
+                nuevalinea = new StringBuilder(String.join(",", datos.get(i)));
                 nuevalinea.replace(0, nuevalinea.length(),
                         nuevalinea.toString().replaceAll(" ", ""));
                 mes = nuevalinea.toString().replaceAll(".*" + letras + ".*", "$1");
@@ -59,7 +51,7 @@ public class leer extends Thread {
                 nuevalinea.replace(0, nuevalinea.length(),
                         nuevalinea.toString().replaceAll(numeros + "\\/" + numeros + "\\/" + numeros,
                                 " '$2/" + dia + "/$3' "));
-                stmt.executeUpdate("INSERT INTO " + tabla + " values (" + nuevalinea.toString() + ")");
+                stmt.executeUpdate("INSERT INTO ventas values (" + nuevalinea.toString() + ")");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -72,8 +64,7 @@ public class leer extends Thread {
             return;
         } catch (SQLException e) {
             e.printStackTrace();
-            return;
         }
-        System.out.println("se inserto correctamente en tabla: " + tabla);
+        System.out.println("se inserto correctamente en tabla: ventas");
     }
 }
