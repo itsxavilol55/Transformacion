@@ -14,7 +14,7 @@ public class LeerTicketH extends Thread {
     private Hashtable<String, int[]> meses = new Hashtable<>();
     private Statement stmt;
 
-    public LeerTicketH(Statement stmt, int aumento, int inicio) {
+    public LeerTicketH(Statement stmt, int inicio, int aumento) {
         this.aumento = aumento;
         this.inicio = inicio;
         this.stmt = stmt;
@@ -33,25 +33,34 @@ public class LeerTicketH extends Thread {
     }
 
     public void run() {
-        try (CSVReader reader = new CSVReader(new FileReader("TicketH.csv"))) {
+        try (CSVReader reader = new CSVReader(new FileReader("C:/datos/TicketH.csv"))) {
             List<String[]> datos = reader.readAll();
             String mes;
             int dia = 0;
             String letras = "\\/([a-z]*)\\/", numeros = "([0-9]*)";
-            StringBuilder nuevalinea;
-            for (int i = inicio + 1; i < datos.size(); i += aumento) {
-                nuevalinea = new StringBuilder(String.join(",", datos.get(i)));
-                nuevalinea.replace(0, nuevalinea.length(),
-                        nuevalinea.toString().replaceAll(" ", ""));
-                mes = nuevalinea.toString().replaceAll(".*" + letras + ".*", "$1");
-                dia = Integer.parseInt(nuevalinea.toString().replaceAll(".*," + numeros + "\\/.*", "$1"));
-                dia = Math.min(dia, meses.get(mes)[1]);
-                nuevalinea.replace(0, nuevalinea.length(),
-                        nuevalinea.toString().replaceAll(letras, "/" + meses.get(mes)[0] + "/"));
-                nuevalinea.replace(0, nuevalinea.length(),
-                        nuevalinea.toString().replaceAll(numeros + "\\/" + numeros + "\\/" + numeros,
-                                " '$2/" + dia + "/$3' "));
-                stmt.executeUpdate("INSERT INTO ventas values (" + nuevalinea.toString() + ")");
+            int batchSize = 1000;
+            StringBuilder values, nuevaLinea;
+            for (int i = 1; i < datos.size(); i += batchSize) {
+                values = new StringBuilder();
+                for (int j = i + inicio; j < i + batchSize && j < datos.size(); j += aumento) {
+                    nuevaLinea = new StringBuilder();
+                    nuevaLinea.append("(");
+                    nuevaLinea.append(String.join(",", datos.get(j)));
+                    nuevaLinea.replace(0, nuevaLinea.length(),
+                            nuevaLinea.toString().replaceAll(" ", ""));
+                    mes = nuevaLinea.toString().replaceAll(".*" + letras + ".*", "$1");
+                    dia = Integer.parseInt(nuevaLinea.toString().replaceAll(".*," + numeros + "\\/.*", "$1"));
+                    dia = Math.min(dia, meses.get(mes)[1]);
+                    nuevaLinea.replace(0, nuevaLinea.length(),
+                            nuevaLinea.toString().replaceAll(letras, "/" + meses.get(mes)[0] + "/"));
+                    nuevaLinea.replace(0, nuevaLinea.length(),
+                            nuevaLinea.toString().replaceAll(numeros + "\\/" + numeros + "\\/" + numeros,
+                                    " '$2/" + dia + "/$3' "));
+                    nuevaLinea.append("),");
+                    values.append(nuevaLinea);
+                }
+                values.deleteCharAt(values.length() - 1);
+                stmt.executeUpdate("INSERT INTO ventas values " + values.toString());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -64,6 +73,7 @@ public class LeerTicketH extends Thread {
             return;
         } catch (SQLException e) {
             e.printStackTrace();
+            return;
         }
         System.out.println("se inserto correctamente en tabla: ventas");
     }
