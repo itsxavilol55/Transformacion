@@ -16,16 +16,23 @@ public class App {
             e.printStackTrace();
         }
         // ticketH
-        LeerTicketH leerTicketH1 = new LeerTicketH(stmt, 0, 2);
-        LeerTicketH leerTicketH2 = new LeerTicketH(stmt, 1, 2);
-        leerTicketH1.start();
-        leerTicketH2.start();
+        // LeerTicketH leerTicketH1 = new LeerTicketH(stmt, 0, 2);
+        // LeerTicketH leerTicketH2 = new LeerTicketH(stmt, 1, 2);
+        // leerTicketH1.start();
+        // leerTicketH2.start();
         // ticketD
-        // int total = 5;
-        // leer[] leerTicketD = new leer[total];
-        // for (int i = 0; i < total; i++)
-        // leerTicketD[i] = new leer("TicketD.csv", i, total, "DetalleVentas");
-        // for (int i = 0; i < total; i++)
-        // leerTicketD[i].start();
+        int total = 5;
+        LeerTicketD[] leerTicketD = new LeerTicketD[total];
+        for (int i = 0; i < total; i++)
+            leerTicketD[i] = new LeerTicketD(stmt, i, total);
+        for (int i = 0; i < total; i++)
+            leerTicketD[i].start();
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("___----.-.-.-.-");
+        System.exit(0);
     }
 }
