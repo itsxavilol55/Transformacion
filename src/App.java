@@ -21,18 +21,23 @@ public class App {
         // leerTicketH1.start();
         // leerTicketH2.start();
         // ticketD
-        int total = 5;
-        LeerTicketD[] leerTicketD = new LeerTicketD[total];
-        for (int i = 0; i < total; i++)
-            leerTicketD[i] = new LeerTicketD(stmt, i, total);
-        for (int i = 0; i < total; i++)
-            leerTicketD[i].start();
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        System.out.println("___----.-.-.-.-");
-        System.exit(0);
+        // int total = 5;
+        // LeerTicketD[] leerTicketD = new LeerTicketD[total];
+        // for (int i = 0; i < total; i++)
+        // leerTicketD[i] = new LeerTicketD(stmt, i, total);
+        // for (int i = 0; i < total; i++)
+        // leerTicketD[i].start();
+        // Synergy
+        LeerSynergy LeerSynergy1 = new LeerSynergy(stmt, 0, 2);
+        LeerSynergy LeerSynergy2 = new LeerSynergy(stmt, 1, 2);
+        LeerSynergy1.start();
+        LeerSynergy2.start();
+        // try {
+        // Thread.sleep(20000);
+        // } catch (InterruptedException e) {
+        // e.printStackTrace();
+        // }
+        // System.out.println("___----.-.-.-.-");
+        // System.exit(0);
     }
 }

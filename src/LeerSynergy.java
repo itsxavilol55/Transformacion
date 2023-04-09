@@ -4,6 +4,7 @@ import com.opencsv.exceptions.CsvException;
 import com.opencsv.exceptions.CsvValidationException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Hashtable;
 import java.util.List;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -31,6 +32,10 @@ public class LeerSynergy extends Thread {
                     nuevaLinea.append(String.join(",", datos.get(j)));
                     nuevaLinea.replace(0, nuevaLinea.length(),
                             nuevaLinea.toString().replaceAll(" ", ""));
+                    nuevaLinea.replace(0, nuevaLinea.length(),
+                            nuevaLinea.toString().replaceAll(",([a-zA-Z \\.&?-]+)", ",'$1'"));
+                    nuevaLinea.replace(0, nuevaLinea.length(),
+                            nuevaLinea.toString().replaceAll("([0-9]*)\\/([0-9]*)\\/([0-9]*)", "'$2/$1/$3'"));
                     nuevaLinea.append("),");
                     values.append(nuevaLinea);
                 }
@@ -50,6 +55,6 @@ public class LeerSynergy extends Thread {
             e.printStackTrace();
             return;
         }
-        System.out.println("se inserto correctamente en tabla: detalleventas");
+        System.out.println("se inserto correctamente en tabla: exports");
     }
 }
