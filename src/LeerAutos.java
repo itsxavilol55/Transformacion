@@ -27,8 +27,8 @@ public class LeerAutos extends Thread {
                 for (int j = i + inicio; j < i + batchSize && j < datos.size(); j += aumento) {
                     StringBuilder nuevaLinea = new StringBuilder("(");
                     nuevaLinea.append(String.join(",", datos.get(j)));
-                    nuevaLinea.replace(0, nuevaLinea.length(),
-                            nuevaLinea.toString().replaceAll(" ", ""));
+                    replaces.removeSpaces(nuevaLinea);
+                    replaces.ponerComillas(nuevaLinea);
                     nuevaLinea.append("),");
                     values.append(nuevaLinea);
                 }

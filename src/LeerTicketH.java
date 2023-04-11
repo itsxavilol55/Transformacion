@@ -42,8 +42,7 @@ public class LeerTicketH extends Thread {
                 for (int j = i + inicio; j < i + batchSize && j < datos.size(); j += aumento) {
                     StringBuilder nuevaLinea = new StringBuilder("(");
                     nuevaLinea.append(String.join(",", datos.get(j)));
-                    nuevaLinea.replace(0, nuevaLinea.length(),
-                            nuevaLinea.toString().replaceAll(" ", ""));
+                    replaces.removeSpaces(nuevaLinea);
                     String mes = nuevaLinea.toString().replaceAll(".*" + letras + ".*", "$1");
                     int dia = Integer.parseInt(nuevaLinea.toString().replaceAll(".*," + numeros + "\\/.*", "$1"));
                     dia = Math.min(dia, meses.get(mes)[1]);

@@ -61,18 +61,13 @@ public class LeerSynergy extends Thread {
             for (int i = 1; i < datos.size(); i += batchSize) {
                 StringBuilder values = new StringBuilder();
                 for (int j = i + inicio; j < i + batchSize && j < datos.size(); j += aumento) {
-                    StringBuilder nuevaLinea = new StringBuilder();
-                    nuevaLinea.append("(");
+                    StringBuilder nuevaLinea = new StringBuilder("(");
                     nuevaLinea.append(String.join(",", datos.get(j)));
-                    nuevaLinea.replace(0, nuevaLinea.length(),
-                            nuevaLinea.toString().replaceAll(" ", ""));
+                    replaces.removeSpaces(nuevaLinea);
                     String pais = nuevaLinea.toString().replaceAll("^\\([0-9]*,[A-Za-z]*,[A-Za-z]*,([A-Za-z]*).*",
                             "$1");
                     int total = Integer.parseInt(nuevaLinea.toString().replaceAll(".*,(\\d*)$", "$1"));
-                    nuevaLinea.replace(0, nuevaLinea.length(),
-                            nuevaLinea.toString().replaceAll(",([a-zA-Z \\.&?-]+)", ",'$1'"));
-                    nuevaLinea.replace(0, nuevaLinea.length(),
-                            nuevaLinea.toString().replaceAll("([0-9]*)\\/([0-9]*)\\/([0-9]*)", "'$2/$1/$3'"));
+                    replaces.ponerComillas(nuevaLinea);
                     nuevaLinea.replace(0, nuevaLinea.length(),
                             nuevaLinea.toString().replaceAll(",(\\d*)$", "," + (conversionTable.get(pais) * total)));
                     nuevaLinea.append("),");
