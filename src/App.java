@@ -5,6 +5,7 @@ import java.sql.Statement;
 
 public class App {
     public static void main(String[] args) {
+        replaces.inserta();
         Connection con;
         Statement stmt = null;
         try {
@@ -24,7 +25,7 @@ public class App {
         // int total = 5;
         // LeerTicketD[] leerTicketD = new LeerTicketD[total];
         // for (int i = 0; i < total; i++)
-        // leerTicketD[i] = new LeerTicketD(stmt, i, total);
+        // leerTicketD[i] = new LeerTicketD(stmt, i, total);s
         // for (int i = 0; i < total; i++)
         // leerTicketD[i].start();
         // Synergy
@@ -33,18 +34,18 @@ public class App {
         // LeerSynergy1.start();
         // LeerSynergy2.start();
         // VentaAutos
-        int total = 6;
+        int total = 1;
         LeerAutos[] leerAutos = new LeerAutos[total];
         for (int i = 0; i < total; i++)
             leerAutos[i] = new LeerAutos(stmt, i, total);
         for (int i = 0; i < total; i++)
             leerAutos[i].start();
-        // try {
-        // Thread.sleep(20000);
-        // } catch (InterruptedException e) {
-        // e.printStackTrace();
-        // }
-        // System.out.println("___----.-.-.-.-");
-        // System.exit(0);
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("___----.-.-.-.-");
+        System.exit(0);
     }
 }

@@ -29,7 +29,9 @@ public class LeerAutos extends Thread {
                     nuevaLinea.append(String.join(",", datos.get(j)));
                     replaces.removeSpaces(nuevaLinea);
                     replaces.ponerComillas(nuevaLinea);
+                    replaces.dateFormat(nuevaLinea);
                     nuevaLinea.append("),");
+                    System.out.println(nuevaLinea);
                     values.append(nuevaLinea);
                 }
                 values.deleteCharAt(values.length() - 1);
