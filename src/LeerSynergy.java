@@ -58,19 +58,17 @@ public class LeerSynergy extends Thread {
         try (CSVReader reader = new CSVReader(new FileReader("C:/datos/synergy_logistics_database.csv"))) {
             List<String[]> datos = reader.readAll();
             int batchSize = 1000;
-            StringBuilder values, nuevaLinea;
-            String pais;
-            int total;
             for (int i = 1; i < datos.size(); i += batchSize) {
-                values = new StringBuilder();
+                StringBuilder values = new StringBuilder();
                 for (int j = i + inicio; j < i + batchSize && j < datos.size(); j += aumento) {
-                    nuevaLinea = new StringBuilder();
+                    StringBuilder nuevaLinea = new StringBuilder();
                     nuevaLinea.append("(");
                     nuevaLinea.append(String.join(",", datos.get(j)));
                     nuevaLinea.replace(0, nuevaLinea.length(),
                             nuevaLinea.toString().replaceAll(" ", ""));
-                    pais = nuevaLinea.toString().replaceAll("^\\([0-9]*,[A-Za-z]*,[A-Za-z]*,([A-Za-z]*).*", "$1");
-                    total = Integer.parseInt(nuevaLinea.toString().replaceAll(".*,(\\d*)$", "$1"));
+                    String pais = nuevaLinea.toString().replaceAll("^\\([0-9]*,[A-Za-z]*,[A-Za-z]*,([A-Za-z]*).*",
+                            "$1");
+                    int total = Integer.parseInt(nuevaLinea.toString().replaceAll(".*,(\\d*)$", "$1"));
                     nuevaLinea.replace(0, nuevaLinea.length(),
                             nuevaLinea.toString().replaceAll(",([a-zA-Z \\.&?-]+)", ",'$1'"));
                     nuevaLinea.replace(0, nuevaLinea.length(),

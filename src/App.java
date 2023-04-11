@@ -28,10 +28,17 @@ public class App {
         // for (int i = 0; i < total; i++)
         // leerTicketD[i].start();
         // Synergy
-        LeerSynergy LeerSynergy1 = new LeerSynergy(stmt, 0, 2);
-        LeerSynergy LeerSynergy2 = new LeerSynergy(stmt, 1, 2);
-        LeerSynergy1.start();
-        LeerSynergy2.start();
+        // LeerSynergy LeerSynergy1 = new LeerSynergy(stmt, 0, 2);
+        // LeerSynergy LeerSynergy2 = new LeerSynergy(stmt, 1, 2);
+        // LeerSynergy1.start();
+        // LeerSynergy2.start();
+        // VentaAutos
+        int total = 6;
+        LeerAutos[] leerAutos = new LeerAutos[total];
+        for (int i = 0; i < total; i++)
+            leerAutos[i] = new LeerAutos(stmt, i, total);
+        for (int i = 0; i < total; i++)
+            leerAutos[i].start();
         // try {
         // Thread.sleep(20000);
         // } catch (InterruptedException e) {

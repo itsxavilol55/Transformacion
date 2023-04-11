@@ -8,18 +8,18 @@ import java.util.List;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class LeerTicketD extends Thread {
+public class LeerAutos extends Thread {
     private int aumento, inicio;
     private Statement stmt;
 
-    public LeerTicketD(Statement stmt, int inicio, int aumento) {
+    public LeerAutos(Statement stmt, int inicio, int aumento) {
         this.aumento = aumento;
         this.inicio = inicio;
         this.stmt = stmt;
     }
 
     public void run() {
-        try (CSVReader reader = new CSVReader(new FileReader("C:/datos/TicketD.csv"))) {
+        try (CSVReader reader = new CSVReader(new FileReader("C:/datos/VentaAutos.csv"))) {
             List<String[]> datos = reader.readAll();
             int batchSize = 1000;
             for (int i = 1; i < datos.size(); i += batchSize) {
@@ -33,7 +33,7 @@ public class LeerTicketD extends Thread {
                     values.append(nuevaLinea);
                 }
                 values.deleteCharAt(values.length() - 1);
-                stmt.executeUpdate("INSERT INTO detalleventas values " + values.toString());
+                stmt.executeUpdate("INSERT INTO Autos values " + values.toString());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -48,6 +48,6 @@ public class LeerTicketD extends Thread {
             e.printStackTrace();
             return;
         }
-        System.out.println("se inserto correctamente en tabla: detalleventas");
+        System.out.println("se inserto correctamente en tabla: Autos");
     }
 }
