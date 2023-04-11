@@ -12,11 +12,46 @@ import java.sql.Statement;
 public class LeerSynergy extends Thread {
     private int aumento, inicio;
     private Statement stmt;
+    private Hashtable<String, Double> conversionTable = new Hashtable<String, Double>();
 
     public LeerSynergy(Statement stmt, int inicio, int aumento) {
         this.aumento = aumento;
         this.inicio = inicio;
         this.stmt = stmt;
+        conversionTable.put("Vietnam", 0.35);
+        conversionTable.put("USA", 20.33);
+        conversionTable.put("Italy", 1.23);
+        conversionTable.put("Brazil", 3.68);
+        conversionTable.put("Netherlands", 1.91);
+        conversionTable.put("UnitedKingdom", 25.01);
+        conversionTable.put("Russia", 0.27);
+        conversionTable.put("Rusia", 0.27);
+        conversionTable.put("Malaysia", 4.89);
+        conversionTable.put("SouthKorea", 0.018);
+        conversionTable.put("Germany", 14.66);
+        conversionTable.put("Philippines", 0.42);
+        conversionTable.put("Switzerland", 22.27);
+        conversionTable.put("UnitedArabEmirates", 5.52);
+        conversionTable.put("Mexico", 1.0);
+        conversionTable.put("China", 3.13);
+        conversionTable.put("Argentina", 0.21);
+        conversionTable.put("Peru", 5.54);
+        conversionTable.put("India", 0.27);
+        conversionTable.put("Croatia", 3.27);
+        conversionTable.put("Austria", 15.22);
+        conversionTable.put("Poland", 5.27);
+        conversionTable.put("Canada", 16.06);
+        conversionTable.put("Ireland", 24.30);
+        conversionTable.put("Slovakia", 2.15);
+        conversionTable.put("Thailand", 0.63);
+        conversionTable.put("France", 22.10);
+        conversionTable.put("Belgium", 19.89);
+        conversionTable.put("Japan", 0.18);
+        conversionTable.put("Spain", 22.53);
+        conversionTable.put("Turkey", 2.43);
+        conversionTable.put("Singapore", 14.96);
+        conversionTable.put("NewZealand", 14.48);
+        conversionTable.put("Belorussia", 10.00);
     }
 
     public void run() {
@@ -24,6 +59,8 @@ public class LeerSynergy extends Thread {
             List<String[]> datos = reader.readAll();
             int batchSize = 1000;
             StringBuilder values, nuevaLinea;
+            String pais;
+            int total;
             for (int i = 1; i < datos.size(); i += batchSize) {
                 values = new StringBuilder();
                 for (int j = i + inicio; j < i + batchSize && j < datos.size(); j += aumento) {
@@ -32,10 +69,14 @@ public class LeerSynergy extends Thread {
                     nuevaLinea.append(String.join(",", datos.get(j)));
                     nuevaLinea.replace(0, nuevaLinea.length(),
                             nuevaLinea.toString().replaceAll(" ", ""));
+                    pais = nuevaLinea.toString().replaceAll("^\\([0-9]*,[A-Za-z]*,[A-Za-z]*,([A-Za-z]*).*", "$1");
+                    total = Integer.parseInt(nuevaLinea.toString().replaceAll(".*,(\\d*)$", "$1"));
                     nuevaLinea.replace(0, nuevaLinea.length(),
                             nuevaLinea.toString().replaceAll(",([a-zA-Z \\.&?-]+)", ",'$1'"));
                     nuevaLinea.replace(0, nuevaLinea.length(),
                             nuevaLinea.toString().replaceAll("([0-9]*)\\/([0-9]*)\\/([0-9]*)", "'$2/$1/$3'"));
+                    nuevaLinea.replace(0, nuevaLinea.length(),
+                            nuevaLinea.toString().replaceAll(",(\\d*)$", "," + (conversionTable.get(pais) * total)));
                     nuevaLinea.append("),");
                     values.append(nuevaLinea);
                 }
