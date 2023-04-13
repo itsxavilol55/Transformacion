@@ -25,7 +25,7 @@ public class App {
         // int total = 5;
         // LeerTicketD[] leerTicketD = new LeerTicketD[total];
         // for (int i = 0; i < total; i++)
-        // leerTicketD[i] = new LeerTicketD(stmt, i, total);s
+        // leerTicketD[i] = new LeerTicketD(stmt, i, total);
         // for (int i = 0; i < total; i++)
         // leerTicketD[i].start();
         // Synergy
@@ -33,12 +33,12 @@ public class App {
         // LeerSynergy LeerSynergy2 = new LeerSynergy(stmt, 1, 2);
         // LeerSynergy1.start();
         // LeerSynergy2.start();
-        // VentaAutos
-        int total = 1;
-        LeerAutos[] leerAutos = new LeerAutos[total];
-        for (int i = 0; i < total; i++)
-            leerAutos[i] = new LeerAutos(stmt, i, total);
-        for (int i = 0; i < total; i++)
+        // // VentaAutos
+        int total2 = 10;
+        LeerAutos[] leerAutos = new LeerAutos[total2];
+        for (int i = 0; i < total2; i++)
+            leerAutos[i] = new LeerAutos(stmt, i, total2);
+        for (int i = 0; i < total2; i++)
             leerAutos[i].start();
         try {
             Thread.sleep(10000);

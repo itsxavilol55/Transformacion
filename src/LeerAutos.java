@@ -11,15 +11,17 @@ import java.sql.Statement;
 public class LeerAutos extends Thread {
     private int aumento, inicio;
     private Statement stmt;
+    private String filename;
 
     public LeerAutos(Statement stmt, int inicio, int aumento) {
         this.aumento = aumento;
         this.inicio = inicio;
         this.stmt = stmt;
+        filename = "C:/datos/VentaAutos-" + (inicio + 1) + ".csv";
     }
 
     public void run() {
-        try (CSVReader reader = new CSVReader(new FileReader("C:/datos/VentaAutos.csv"))) {
+        try (CSVReader reader = new CSVReader(new FileReader(filename))) {
             List<String[]> datos = reader.readAll();
             int batchSize = 1000;
             for (int i = 1; i < datos.size(); i += batchSize) {
@@ -31,7 +33,6 @@ public class LeerAutos extends Thread {
                     replaces.ponerComillas(nuevaLinea);
                     replaces.dateFormat(nuevaLinea);
                     nuevaLinea.append("),");
-                    System.out.println(nuevaLinea);
                     values.append(nuevaLinea);
                 }
                 values.deleteCharAt(values.length() - 1);
