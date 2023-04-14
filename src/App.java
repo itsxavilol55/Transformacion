@@ -37,7 +37,7 @@ public class App {
         int total2 = 10;
         LeerAutos[] leerAutos = new LeerAutos[total2];
         for (int i = 0; i < total2; i++)
-            leerAutos[i] = new LeerAutos(stmt, i, total2);
+            leerAutos[i] = new LeerAutos(stmt, i, 1);
         for (int i = 0; i < total2; i++)
             leerAutos[i].start();
         try {
@@ -45,7 +45,6 @@ public class App {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("___----.-.-.-.-");
         System.exit(0);
     }
 }

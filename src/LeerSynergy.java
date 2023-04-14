@@ -68,7 +68,6 @@ public class LeerSynergy extends Thread {
                             "$1");
                     int total = Integer.parseInt(nuevaLinea.toString().replaceAll(".*,(\\d*)$", "$1"));
                     replaces.ponerComillas(nuevaLinea);
-                    System.out.println(nuevaLinea);
                     replaces.dateFormat(nuevaLinea);
                     nuevaLinea.replace(0, nuevaLinea.length(),
                             nuevaLinea.toString().replaceAll(",(\\d*)$", "," + (conversionTable.get(pais) * total)));
