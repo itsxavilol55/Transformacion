@@ -30,6 +30,8 @@ public class LeerAutos extends Thread {
                     StringBuilder nuevaLinea = new StringBuilder("(");
                     nuevaLinea.append(String.join(",", datos.get(j)));
                     replaces.removeSpaces(nuevaLinea);
+                    replaces.estadoFormat(nuevaLinea);
+                    replaces.ciudadFormat(nuevaLinea);
                     replaces.ponerComillas(nuevaLinea);
                     replaces.dateFormat(nuevaLinea);
                     nuevaLinea.append("),");

@@ -3,6 +3,8 @@ import java.util.Hashtable;
 public class replaces {
     private static final Hashtable<String, Integer> meses = new Hashtable<>();
     private static final Hashtable<String, Integer> dias = new Hashtable<>();
+    private static final Hashtable<String, String> estados = new Hashtable<String, String>();
+    private static final Hashtable<String, String> ciudades = new Hashtable<String, String>();
     private static String letras = "\\/([a-z]*)\\/", numeros = "([0-9]*)";
 
     public static void inserta() {
@@ -30,6 +32,46 @@ public class replaces {
         dias.put("10", 31);
         dias.put("11", 30);
         dias.put("12", 31);
+        estados.put("BC", "Baja California");
+        estados.put("CHI", "Chihuahua");
+        estados.put("NL", "Nuevo Leon");
+        estados.put("SINALOA", "Sinaloa");
+        estados.put("DURANGO", "Durango");
+        estados.put("NAY", "Nayarit");
+        estados.put("DUR", "Durango");
+        estados.put("SIN", "Sinaloa");
+        estados.put("SON", "Sonora");
+        estados.put("BCS", "Baja California Sur");
+        ciudades.put("DELICIAS", "Delicias");
+        ciudades.put("LOSMOCHIS", "Los Mochis");
+        ciudades.put("MEXICALI", "Mexicali");
+        ciudades.put("CONSTITUCION", "Constitucion");
+        ciudades.put("GVE", "Guasave");
+        ciudades.put("GOMEZPALACIO", "Gomez Palacio");
+        ciudades.put("OBREGON", "Ciudad Obregon");
+        ciudades.put("NAVOJOA", "Navojoa");
+        ciudades.put("HERMOSILLO", "Hermosillo");
+        ciudades.put("CHI", "Chihuahua");
+        ciudades.put("ENSENADA", "Ensenada");
+        ciudades.put("MONTERREY", "Monterrey");
+        ciudades.put("LAPAZ", "La Paz");
+        ciudades.put("CDJUAREZ", "Ciudad Juarez");
+        ciudades.put("CD.GUZMAN", "Ciudad Guzman");
+        ciudades.put("CLN", "Culiacan");
+        ciudades.put("DURANGO", "Durango");
+        ciudades.put("IXTLANDLERIO", "Ixtlan del Rio");
+        ciudades.put("ROSARITO", "Rosarito");
+        ciudades.put("LOSCABOS", "Los Cabos");
+        ciudades.put("GUASAVE", "Guasave");
+        ciudades.put("MAZATLAN", "Mazatlan");
+        ciudades.put("MZTL", "Mazatlan");
+        ciudades.put("TEPIC", "Tepic");
+        ciudades.put("SANNICOLASDELOSGARZA", "San Nicolas de los Garza");
+        ciudades.put("LMM", "Los Mochis");
+        ciudades.put("SANLUISRIO", "San Luis Rio Colorado");
+        ciudades.put("GUAYMAS", "Guaymas");
+        ciudades.put("TIJUANA", "Tijuana");
+        ciudades.put("CULIACAN", "Culiacan");
     }
 
     public static void removeSpaces(StringBuilder nuevaLinea) {
@@ -54,5 +96,19 @@ public class replaces {
         String mes = nuevaLinea.toString().replaceAll(".*" + letras + ".*", "$1");
         nuevaLinea.replace(0, nuevaLinea.length(),
                 nuevaLinea.toString().replaceAll(letras, "/" + meses.get(mes) + "/"));
+    }
+
+    public static void estadoFormat(StringBuilder nuevaLinea) {
+        String estado = nuevaLinea.toString().replaceAll("^\\(([A-Z]*).*", "$1");
+        estado = estado.toUpperCase();
+        nuevaLinea.replace(0, nuevaLinea.length(),
+                nuevaLinea.toString().replaceAll("^\\(([A-Z]*)", "(" + estados.get(estado)));
+    }
+
+    public static void ciudadFormat(StringBuilder nuevaLinea) {
+        String ciudad = nuevaLinea.toString().replaceAll("^\\([A-Za-z ]*,([A-Za-z\\.]*).*", "$1");
+        ciudad = ciudad.toUpperCase();
+        nuevaLinea.replace(0, nuevaLinea.length(),
+                nuevaLinea.toString().replaceAll("^(\\([A-Za-z ]*),([A-Za-z\\.]*)", "$1," + ciudades.get(ciudad)));
     }
 }
